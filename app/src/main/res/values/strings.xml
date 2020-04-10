@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HowWasYourDay</string>
+    <string name="app_short_name">HWYD</string>
 </resources>

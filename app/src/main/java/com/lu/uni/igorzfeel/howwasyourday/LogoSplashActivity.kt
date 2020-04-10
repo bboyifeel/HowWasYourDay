@@ -19,7 +19,7 @@ class LogoSplashActivity: AppCompatActivity() {
         val background = object : Thread() {
             override fun run() {
                 try {
-                    sleep(750)
+                    sleep(1000)
                     checkIfLoggedIn()
                 } catch (e: Exception) {
                     Log.d(TAG, e.toString())
@@ -40,7 +40,7 @@ class LogoSplashActivity: AppCompatActivity() {
             startActivity(intent)
         }
         else {
-            val intent = Intent(baseContext, SettingsActivity::class.java)
+            val intent = Intent(baseContext, DashboardActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 .or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
