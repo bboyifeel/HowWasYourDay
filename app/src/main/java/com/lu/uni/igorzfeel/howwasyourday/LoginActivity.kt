@@ -1,5 +1,6 @@
 package com.lu.uni.igorzfeel.howwasyourday
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -42,6 +43,11 @@ class LoginActivity: AppCompatActivity() {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d("LoginActivity", "uid: ${it.result?.user?.uid}")
+
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        .or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
                 }
             }
             .addOnFailureListener {
