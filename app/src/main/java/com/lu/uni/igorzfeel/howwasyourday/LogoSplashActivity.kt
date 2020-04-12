@@ -32,7 +32,7 @@ class LogoSplashActivity: AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn() {
-        var user = FirebaseAuth.getInstance().uid
+        var user = FirebaseAuth.getInstance().currentUser
         if (user==null) {
             val intent = Intent(baseContext, RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.lu.uni.igorzfeel.howwasyourday.models.UserAuth
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
+
+    companion object {
+        val TAG: String = "RegisterActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         login_text_view_register.setOnClickListener{
-            Log.d("RegisterActivity", "Trying to loging")
+            Log.d(TAG, "Trying to loging")
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
@@ -37,9 +43,9 @@ class RegisterActivity : AppCompatActivity() {
                 .show()
             return
         }
-        Log.d("RegisterActivity", "Username is: $username")
-        Log.d("RegisterActivity", "Email is: $email")
-        Log.d("RegisterActivity", "Password is: $password")
+        Log.d(TAG, "Username is: $username")
+        Log.d(TAG, "Email is: $email")
+        Log.d(TAG, "Password is: $password")
 
         FirebaseAuth.getInstance()
             .createUserWithEmailAndPassword(email, password)
@@ -47,7 +53,9 @@ class RegisterActivity : AppCompatActivity() {
                 if (!it.isSuccessful) return@addOnCompleteListener
 
                 // succeeded
-                Log.d("RegisterActivity", "uid: ${it.result?.user?.uid}")
+                Log.d(TAG, "uid: ${it.result?.user?.uid}")
+
+                sendUserToFirebaseDatabase()
 
                 val intent = Intent(this, DashboardActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -61,5 +69,23 @@ class RegisterActivity : AppCompatActivity() {
                     .show()
             }
     }
+
+    private fun sendUserToFirebaseDatabase() {
+        val username = username_edittext_register.text.toString()
+        val email    = email_edittext_register.text.toString()
+        val user = UserAuth(username, email)
+
+        val uid = FirebaseAuth.getInstance().uid ?: ""
+        val ref = FirebaseFirestore.getInstance().collection("users")
+        ref.document(uid).set(user)
+            .addOnSuccessListener {
+                Log.d(TAG, "User has been saved to Firestore")
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "Error creating a user in Firestore ", it)
+            }
+
+    }
+
 
 }
