@@ -6,7 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
 import com.google.firebase.auth.FirebaseAuth
+import com.lu.uni.igorzfeel.howwasyourday.adapters.UserItem
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_dashboard.*
+
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -18,6 +24,13 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
         supportActionBar?.title = "Dashboard"
+
+        val userItemAdapter = GroupAdapter<GroupieViewHolder>()
+
+        userItemAdapter.add(UserItem())
+        userItemAdapter.add(UserItem())
+
+        recyclerview_users_dashboard.adapter = userItemAdapter
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
